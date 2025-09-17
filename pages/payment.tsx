@@ -130,11 +130,25 @@ export default function PaymentsPage() {
   const createPayment = async () => {
     setError('');
     setResponse(null);
+
+    // ✅ Open a blank tab immediately to avoid popup blocker
+    const newTab = window.open('', '_blank');
+
     try {
       const res = await api.post('/payment/create', form);
       setResponse(res.data);
+
+      // Support both uppercase/lowercase keys
+      const url = res.data?.Collect_request_url || res.data?.collect_request_url;
+
+      if (url && newTab) {
+        newTab.location.href = url; // Redirect blank tab
+      } else {
+        newTab?.close();
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Payment creation failed');
+      newTab?.close();
     }
   };
 
@@ -194,8 +208,11 @@ export default function PaymentsPage() {
           </button>
 
           {response && (
-            <div className="mt-4 p-3 bg-green-100 rounded">
-              <pre className="text-sm">{JSON.stringify(response, null, 2)}</pre>
+            <div className="mt-4 bg-gray-900 text-green-400 rounded-lg shadow-lg p-4 overflow-x-auto">
+              <h4 className="text-white font-semibold mb-2">Payment Response</h4>
+              <pre className="text-sm whitespace-pre-wrap break-all">
+                {JSON.stringify(response, null, 2)}
+              </pre>
             </div>
           )}
         </div>
@@ -217,8 +234,11 @@ export default function PaymentsPage() {
           </button>
 
           {statusResponse && (
-            <div className="mt-4 p-3 bg-blue-100 rounded">
-              <pre className="text-sm">{JSON.stringify(statusResponse, null, 2)}</pre>
+            <div className="mt-4 bg-gray-900 text-blue-400 rounded-lg shadow-lg p-4 overflow-x-auto">
+              <h4 className="text-white font-semibold mb-2">Status Response</h4>
+              <pre className="text-sm whitespace-pre-wrap break-all">
+                {JSON.stringify(statusResponse, null, 2)}
+              </pre>
             </div>
           )}
         </div>
