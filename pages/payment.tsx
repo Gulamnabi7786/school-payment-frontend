@@ -50,40 +50,181 @@
 
 
 
-// pages/payment.tsx
-import { useState } from 'react';
-import api from '../utils/axios';
+// // pages/payment.tsx
+// import { useState } from 'react';
+// import api from '../utils/axios';
 
-export default function Payment() {
-  const [amount, setAmount] = useState('');
-  const [response, setResponse] = useState(null);
+// export default function Payment() {
+//   const [amount, setAmount] = useState('');
+//   const [response, setResponse] = useState(null);
+
+//   const createPayment = async () => {
+//     try {
+//       const res = await api.post('/payment/create', {
+//         school_id: 'SCH001',
+//         amount,
+//         callback_url: 'https://google.com',
+//         custom_order_id: 'ORDER123',
+//       });
+//       setResponse(res.data);
+//     } catch (err: any) {
+//       setResponse(err.response?.data || err.message);
+//     }
+//   };
+
+//   return (
+//     <div className="p-4">
+//       <input
+//         value={amount}
+//         onChange={(e) => setAmount(e.target.value)}
+//         placeholder="Enter Amount"
+//         className="border p-2"
+//       />
+//       <button onClick={createPayment} className="ml-2 px-4 py-2 bg-blue-600 text-white rounded">
+//         Pay
+//       </button>
+//       <pre>{JSON.stringify(response, null, 2)}</pre>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// frontend/pages/payments.tsx
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import api from '../utils/axios';
+import Navbar from '../components/Navbar';
+
+export default function PaymentsPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({
+    school_id: '',
+    amount: '',
+    callback_url: '',
+    custom_order_id: '',
+  });
+  const [response, setResponse] = useState<any>(null);
+  const [statusId, setStatusId] = useState('');
+  const [statusResponse, setStatusResponse] = useState<any>(null);
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const createPayment = async () => {
+    setError('');
+    setResponse(null);
     try {
-      const res = await api.post('/payment/create', {
-        school_id: 'SCH001',
-        amount,
-        callback_url: 'https://google.com',
-        custom_order_id: 'ORDER123',
-      });
+      const res = await api.post('/payment/create', form);
       setResponse(res.data);
     } catch (err: any) {
-      setResponse(err.response?.data || err.message);
+      setError(err.response?.data?.message || 'Payment creation failed');
+    }
+  };
+
+  const checkStatus = async () => {
+    setError('');
+    setStatusResponse(null);
+    try {
+      const res = await api.get(`/payment/status/${statusId}`);
+      setStatusResponse(res.data);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to fetch status');
     }
   };
 
   return (
-    <div className="p-4">
-      <input
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        placeholder="Enter Amount"
-        className="border p-2"
-      />
-      <button onClick={createPayment} className="ml-2 px-4 py-2 bg-blue-600 text-white rounded">
-        Pay
-      </button>
-      <pre>{JSON.stringify(response, null, 2)}</pre>
-    </div>
+    <>
+      <Navbar />
+      <div className="p-6 container mx-auto">
+        <h2 className="text-2xl font-bold mb-4">💳 Payments</h2>
+
+        {/* Payment Create Form */}
+        <div className="bg-white shadow rounded-lg p-4 mb-6">
+          <h3 className="text-xl font-semibold mb-3">Create Payment</h3>
+          <input
+            name="school_id"
+            value={form.school_id}
+            onChange={handleChange}
+            placeholder="School ID"
+            className="border p-2 rounded w-full mb-3"
+          />
+          <input
+            name="amount"
+            value={form.amount}
+            onChange={handleChange}
+            placeholder="Amount"
+            className="border p-2 rounded w-full mb-3"
+          />
+          <input
+            name="callback_url"
+            value={form.callback_url}
+            onChange={handleChange}
+            placeholder="Callback URL"
+            className="border p-2 rounded w-full mb-3"
+          />
+          <input
+            name="custom_order_id"
+            value={form.custom_order_id}
+            onChange={handleChange}
+            placeholder="Custom Order ID (optional)"
+            className="border p-2 rounded w-full mb-3"
+          />
+          <button
+            onClick={createPayment}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Create Payment
+          </button>
+
+          {response && (
+            <div className="mt-4 p-3 bg-green-100 rounded">
+              <pre className="text-sm">{JSON.stringify(response, null, 2)}</pre>
+            </div>
+          )}
+        </div>
+
+        {/* Check Payment Status */}
+        <div className="bg-white shadow rounded-lg p-4">
+          <h3 className="text-xl font-semibold mb-3">Check Payment Status</h3>
+          <input
+            value={statusId}
+            onChange={(e) => setStatusId(e.target.value)}
+            placeholder="Collect Request ID"
+            className="border p-2 rounded w-full mb-3"
+          />
+          <button
+            onClick={checkStatus}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Check Status
+          </button>
+
+          {statusResponse && (
+            <div className="mt-4 p-3 bg-blue-100 rounded">
+              <pre className="text-sm">{JSON.stringify(statusResponse, null, 2)}</pre>
+            </div>
+          )}
+        </div>
+
+        {error && <p className="text-red-500 mt-4">{error}</p>}
+      </div>
+    </>
   );
 }
