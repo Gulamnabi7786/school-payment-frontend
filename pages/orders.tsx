@@ -1,30 +1,122 @@
+// // import { useEffect, useState } from 'react';
+// // import API from '../utils/api';
+// // import Navbar from '../components/Navbar';
+
+// // export default function Orders(){
+// //   const [orders, setOrders] = useState<any[]>([]);
+// //   useEffect(()=>{
+// //     API.get('/orders').then(res => setOrders(res.data)).catch(()=>{});
+// //   }, []);
+// //   return (
+// //     <>
+// //       <Navbar />
+// //       <div className="p-6 container">
+// //         <h2 className="text-2xl font-bold mb-4">Orders</h2>
+// //         <div className="grid grid-cols-1 gap-4">
+// //           {orders.map(o=>(
+// //             <div key={o._id} className="border p-4 rounded bg-white shadow-sm">
+// //               <div><strong>School:</strong> {o.school_id}</div>
+// //               <div><strong>Gateway:</strong> {o.gateway_name}</div>
+// //               <div><strong>Student:</strong> {o.student_info?.name}</div>
+// //             </div>
+// //           ))}
+// //           {orders.length===0 && <div>No orders found</div>}
+// //         </div>
+// //       </div>
+// //     </>
+// //   )
+// // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // frontend/pages/orders.tsx
 // import { useEffect, useState } from 'react';
-// import API from '../utils/api';
+// import { useRouter } from 'next/router';
+// import api from '../utils/axios';
 // import Navbar from '../components/Navbar';
 
-// export default function Orders(){
+// export default function OrdersPage() {
 //   const [orders, setOrders] = useState<any[]>([]);
-//   useEffect(()=>{
-//     API.get('/orders').then(res => setOrders(res.data)).catch(()=>{});
-//   }, []);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState('');
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     const token = localStorage.getItem('token');
+//     if (!token) {
+//       router.push('/login'); // redirect if not logged in
+//       return;
+//     }
+
+//     const fetchOrders = async () => {
+//       try {
+//         const res = await api.get('/orders');
+//         setOrders(res.data);
+//       } catch (err: any) {
+//         if (err.response?.status === 401) {
+//           localStorage.removeItem('token');
+//           router.push('/login');
+//         } else {
+//           setError(err.response?.data?.message || 'Failed to fetch orders');
+//         }
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchOrders();
+//   }, [router]);
+
 //   return (
 //     <>
 //       <Navbar />
-//       <div className="p-6 container">
-//         <h2 className="text-2xl font-bold mb-4">Orders</h2>
-//         <div className="grid grid-cols-1 gap-4">
-//           {orders.map(o=>(
-//             <div key={o._id} className="border p-4 rounded bg-white shadow-sm">
-//               <div><strong>School:</strong> {o.school_id}</div>
-//               <div><strong>Gateway:</strong> {o.gateway_name}</div>
-//               <div><strong>Student:</strong> {o.student_info?.name}</div>
+//       <div className="p-6 container mx-auto">
+//         <h2 className="text-2xl font-bold mb-4">📦 Orders</h2>
+
+//         {loading && <p>Loading orders...</p>}
+//         {error && <p className="text-red-500">{error}</p>}
+
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+//           {orders.map((order) => (
+//             <div
+//               key={order._id}
+//               className="border p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition"
+//             >
+//               <p><strong>School ID:</strong> {order.school_id}</p>
+//               <p><strong>Gateway:</strong> {order.gateway_name || 'N/A'}</p>
+//               <p><strong>Student:</strong> {order.student_info?.name}</p>
+//               <p><strong>Created:</strong> {new Date(order.createdAt).toLocaleString()}</p>
 //             </div>
 //           ))}
-//           {orders.length===0 && <div>No orders found</div>}
 //         </div>
+
+//         {!loading && orders.length === 0 && (
+//           <p className="text-gray-600">No orders found.</p>
+//         )}
 //       </div>
 //     </>
-//   )
+//   );
 // }
 
 
@@ -34,87 +126,100 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// frontend/pages/orders.tsx
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import api from '../utils/axios';
-import Navbar from '../components/Navbar';
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import api from '../utils/axios'
+import Navbar from '../components/Navbar'
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const router = useRouter();
+  const [orders, setOrders] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
     if (!token) {
-      router.push('/login'); // redirect if not logged in
-      return;
+      router.push('/login') // redirect if not logged in
+      return
     }
 
     const fetchOrders = async () => {
       try {
-        const res = await api.get('/orders');
-        setOrders(res.data);
+        const res = await api.get('/orders')
+        setOrders(res.data)
       } catch (err: any) {
         if (err.response?.status === 401) {
-          localStorage.removeItem('token');
-          router.push('/login');
+          localStorage.removeItem('token')
+          router.push('/login')
         } else {
-          setError(err.response?.data?.message || 'Failed to fetch orders');
+          setError(err.response?.data?.message || 'Failed to fetch orders')
         }
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchOrders();
-  }, [router]);
+    fetchOrders()
+  }, [router])
 
   return (
     <>
       <Navbar />
       <div className="p-6 container mx-auto">
-        <h2 className="text-2xl font-bold mb-4">📦 Orders</h2>
+        <h2 className="text-3xl font-extrabold mb-6 text-blue-700 flex items-center">
+          📦 Orders
+        </h2>
 
-        {loading && <p>Loading orders...</p>}
+        {loading && <p className="text-gray-500">Loading orders...</p>}
         {error && <p className="text-red-500">{error}</p>}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {orders.map((order) => (
             <div
               key={order._id}
-              className="border p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition"
+              className="relative border border-gray-200 bg-white rounded-2xl shadow-md p-6 transition transform hover:-translate-y-1 hover:shadow-lg"
             >
-              <p><strong>School ID:</strong> {order.school_id}</p>
-              <p><strong>Gateway:</strong> {order.gateway_name || 'N/A'}</p>
-              <p><strong>Student:</strong> {order.student_info?.name}</p>
-              <p><strong>Created:</strong> {new Date(order.createdAt).toLocaleString()}</p>
+              {/* Decorative gradient border */}
+              <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-blue-200 to-green-200 -z-10"></div>
+
+              <h3 className="text-lg font-bold text-gray-800 mb-2">
+                🏫 {order.school_id}
+              </h3>
+
+              <p className="text-gray-600 mb-1">
+                <span className="font-semibold">Gateway:</span>{' '}
+                {order.gateway_name || 'N/A'}
+              </p>
+              <p className="text-gray-600 mb-1">
+                <span className="font-semibold">Student:</span>{' '}
+                {order.student_info?.name}
+              </p>
+              <p className="text-gray-600 mb-3">
+                <span className="font-semibold">Created:</span>{' '}
+                {new Date(order.createdAt).toLocaleString()}
+              </p>
+
+              {/* Example status badge if available */}
+              {order.status && (
+                <span
+                  className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
+                    order.status === 'paid'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-yellow-100 text-yellow-700'
+                  }`}
+                >
+                  {order.status.toUpperCase()}
+                </span>
+              )}
             </div>
           ))}
         </div>
 
         {!loading && orders.length === 0 && (
-          <p className="text-gray-600">No orders found.</p>
+          <p className="text-gray-600 text-center mt-6">No orders found.</p>
         )}
       </div>
     </>
-  );
+  )
 }
