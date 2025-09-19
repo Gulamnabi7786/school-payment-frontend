@@ -297,7 +297,7 @@ export default function OrdersPage() {
   })
 
   const getStatusBadge = (status: string) => {
-    switch(status) {
+    switch (status) {
       case 'paid': return 'badge-success'
       case 'pending': return 'badge-warning'
       case 'failed': return 'badge-error'
@@ -361,8 +361,8 @@ export default function OrdersPage() {
           {/* Orders Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredOrders.map((order, index) => (
-              <Card 
-                key={order._id} 
+              <Card
+                key={order._id}
                 className="card-elevated hover:scale-105 transition-all duration-300 cursor-pointer animate-scale-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -376,23 +376,40 @@ export default function OrdersPage() {
                       {order.status?.toUpperCase()}
                     </span>
                   </div>
+
                 </CardHeader>
 
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">{order.student_info?.name}</span>
+                      <span className="font-medium">{order.student_info?.name || 'N/A'}</span>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <CreditCard className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{order.gateway_name || 'N/A'}</span>
+                      <span className="text-sm">{order.payment_mode?.toUpperCase() || 'N/A'}</span>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{new Date(order.createdAt).toLocaleDateString()}</span>
+                    </div>
+
+                    {/* New Fields */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">Amount:</span>
+                      <span>{order.transaction_amount || order.order_amount || 'N/A'}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-1 text-xs rounded-full ${order.status === 'success' ? 'bg-green-100 text-green-700' :
+                          order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                            order.status === 'failed' ? 'bg-red-100 text-red-700' :
+                              'bg-gray-100 text-gray-700'
+                        }`}>
+                        {order.status?.toUpperCase() || 'PENDING'}
+                      </span>
                     </div>
                   </div>
 
@@ -405,6 +422,7 @@ export default function OrdersPage() {
                     </Button>
                   </div>
                 </CardContent>
+
               </Card>
             ))}
           </div>
@@ -427,3 +445,4 @@ export default function OrdersPage() {
     </>
   )
 }
+
