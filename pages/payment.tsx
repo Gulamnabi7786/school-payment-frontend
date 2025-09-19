@@ -281,16 +281,14 @@
 
 
 import { useState } from "react";
-import { CreditCard, Search, Send, CheckCircle } from "lucide-react";
+import { CreditCard, Search, Send } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../components/ui/select";
 import Navbar from "../components/Navbar";
 import api from "../utils/axios";
 
-export default function PaymentsPage() {
+export default function PaymentPage() {
   const [paymentData, setPaymentData] = useState({
     school_id: "",
     amount: "",
@@ -474,7 +472,10 @@ export default function PaymentsPage() {
               </Card>
             </div>
           </div>
+
+          {error && <p className="text-red-500 mt-4">{error}</p>}
         </div>
-      </>
+      </div>
+    </>
   );
 }
