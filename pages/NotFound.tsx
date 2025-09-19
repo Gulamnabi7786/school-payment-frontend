@@ -29,7 +29,7 @@ const NotFound = () => {
             </div>
             
             <div className="flex flex-col gap-3">
-              <Link href="/index">
+              <Link href="/">
                 <Button className="btn-gradient-primary w-full gap-2">
                   <Home className="h-4 w-4" />
                   Go to Homepage
