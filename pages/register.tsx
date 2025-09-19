@@ -143,7 +143,7 @@
 
 
 
-
+import { Analytics } from "@vercel/analytics/next"
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import api from '../utils/axios'
@@ -175,6 +175,7 @@ export default function RegisterPage() {
       {/* Main Card */}
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md text-center transform transition hover:scale-105">
+          <Analytics />
           <h2 className="text-3xl font-extrabold mb-6 text-green-700">Register</h2>
 
           <input

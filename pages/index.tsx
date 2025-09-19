@@ -1,31 +1,4 @@
-// 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import { Analytics } from "@vercel/analytics/next"
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import {
@@ -95,6 +68,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Analytics />
       {/* Navigation */}
       <nav className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 animate-fade-in">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">

@@ -182,7 +182,7 @@
 
 
 "use client"
-
+import { Analytics } from "@vercel/analytics/next"
 import { useState } from "react"
 import api from '../utils/axios'
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"
@@ -219,6 +219,7 @@ export default function Login() {
       <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* Login Form */}
         <div className="animate-fade-in">
+          <Analytics />
           <Card className="card-elevated max-w-md mx-auto">
             <CardHeader className="space-y-1 text-center">
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
