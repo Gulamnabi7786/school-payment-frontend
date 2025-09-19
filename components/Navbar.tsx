@@ -1,29 +1,19 @@
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { logout, getToken } from '../utils/auth';
+import Link from "next/link"
 
 export default function Navbar() {
-  const [auth, setAuth] = useState(false);
-  useEffect(() => setAuth(!!getToken()), []);
   return (
-    <nav className="bg-blue-600 text-white p-4">
-      <div className="container flex justify-between items-center">
-        <div className="font-bold">School Payments</div>
-        <div className="space-x-4">
-          <Link href="/orders">Orders</Link>
-          <Link href="/payment">Payments</Link>
-          {auth ? (
-            <button
-              onClick={() => { logout(); window.location.href = '/login'; }}
-              className="ml-4 bg-red-500 px-2 py-1 rounded"
-            >
-              Logout
-            </button>
-          ) : (
-            <Link href="/login" className="ml-4">Login</Link>
-          )}
-        </div>
-
+    <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
+      <h1 className="font-bold text-lg">Edviron</h1>
+      <div className="space-x-4">
+        <Link href="/dashboard" className="hover:underline">
+          Dashboard
+        </Link>
+        <Link href="/orders" className="hover:underline">
+          Orders
+        </Link>
+        <Link href="/login" className="hover:underline">
+          Logout
+        </Link>
       </div>
     </nav>
   )

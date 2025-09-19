@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* School Payment Dashboard Design System - Pastel + Modern */
+
+@layer base {
+  :root {
+    /* Base colors - Clean whites and soft grays */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    
+    /* Card system - Elevated and clean */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --card-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    
+    /* Pastel color palette */
+    --primary: 239 84% 67%; /* Soft blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 239 100% 95%;
+    
+    --secondary: 142 76% 73%; /* Soft green */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 142 100% 95%;
+    
+    --accent: 320 65% 75%; /* Soft pink */
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 320 100% 96%;
+    
+    --warning: 38 92% 65%; /* Soft orange */
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 38 100% 95%;
+    
+    --success: 152 69% 61%; /* Success green */
+    --success-foreground: 0 0% 100%;
+    --success-light: 152 100% 95%;
+    
+    --error: 0 84% 60%; /* Error red */
+    --error-foreground: 0 0% 100%;
+    --error-light: 0 100% 95%;
+    
+    /* Neutral tones */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(286 84% 67%));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(171 76% 73%));
+    --gradient-hero: linear-gradient(135deg, hsl(214 84% 67%), hsl(286 84% 67%));
+    --gradient-warm: linear-gradient(135deg, hsl(171 76% 73%), hsl(142 76% 73%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(220 14% 98%));
+    
+    /* Interactive elements */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 239 84% 67%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Spacing and sizing */
+    --radius: 1rem;
+    --radius-lg: 1.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Card variants */
+  .card-elevated {
+    @apply bg-card rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-border/50;
+  }
+  
+  .card-gradient {
+    @apply rounded-2xl shadow-md hover:shadow-lg transition-all duration-300;
+    background: var(--gradient-subtle);
+  }
+  
+  /* Button gradients */
+  .btn-gradient-primary {
+    background: var(--gradient-primary);
+    @apply text-white rounded-xl px-6 py-3 font-semibold hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-gradient-secondary {
+    background: var(--gradient-secondary);
+    @apply text-white rounded-xl px-6 py-3 font-semibold hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-gradient-warm {
+    background: var(--gradient-warm);
+    @apply text-white rounded-xl px-6 py-3 font-semibold hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+  
+  /* Hero backgrounds */
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+  
+  .hero-warm {
+    background: var(--gradient-warm);
+  }
+  
+  /* Status badges */
+  .badge-success {
+    @apply bg-success text-success-foreground px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .badge-warning {
+    @apply bg-warning text-warning-foreground px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .badge-error {
+    @apply bg-error text-error-foreground px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  /* Floating action button */
+  .fab {
+    @apply fixed bottom-8 right-8 w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110;
+    background: var(--gradient-primary);
+  }
+  
+  /* Sidebar styles */
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-primary/10 cursor-pointer;
+  }
+  
+  .sidebar-item.active {
+    @apply bg-primary text-primary-foreground;
+  }
+  
+  /* Input styles */
+  .input-large {
+    @apply w-full px-4 py-4 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200;
+  }
+  
+  /* Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
