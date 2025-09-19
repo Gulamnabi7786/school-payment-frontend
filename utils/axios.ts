@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: '/api', // ✅ must use backend
+  baseURL: process.env.NEXT_PUBLIC_API_URL || '/api', // ✅ must use backend
 });
 
 // ✅ Optional: attach token automatically

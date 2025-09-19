@@ -308,7 +308,7 @@ export default function PaymentPage() {
 
   const createPayment = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); 
+    setError("");
     setResponse(null);
     const newTab = window.open("", "_blank");
 
@@ -332,11 +332,23 @@ export default function PaymentPage() {
     setError("");
     setStatusResponse(null);
     try {
-      setIsChecking(true);
-      const res = await api.get(`/payment/status/${statusId}`);
-      setStatusResponse(res.data);
+      // ✅ Get token from localStorage
+      const token = localStorage.getItem('token')
+      if (!token) {
+        setError('You are not logged in')
+        return
+      }
+
+      // Make request with Authorization header
+      const res = await api.get(`/payment/status/${statusId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setStatusResponse(res.data)
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch status");
+      setError(err.response?.data?.message || 'Failed to fetch status')
     } finally {
       setIsChecking(false);
     }
@@ -371,7 +383,7 @@ export default function PaymentPage() {
                 <CardContent className="p-6 space-y-6">
                   <form onSubmit={createPayment} className="space-y-4">
 
-                    <Input 
+                    <Input
                       placeholder="School ID"
                       value={paymentData.school_id}
                       onChange={(e) => handleInputChange("school_id", e.target.value)}
@@ -428,7 +440,7 @@ export default function PaymentPage() {
             </div>
 
             {/* Check Status */}
-            <div className="animate-slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="animate-slide-up" style={{ animationDelay: "0.2s" }}>
               <Card className="card-elevated">
                 <CardHeader className="bg-gradient-to-r from-secondary/10 to-success/10 rounded-t-2xl">
                   <CardTitle className="flex items-center gap-3 text-2xl">
